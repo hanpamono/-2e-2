@@ -84,19 +84,88 @@
         const appContainer = document.getElementById('app');
         const toastContainer = document.getElementById('toast-container');
 
-        // === データ処理 (sharedStorageを保存対象に追加) ===
         function getPartyRef() { if (!state.partyId) return null; return database.ref('parties/' + state.partyId); }
         function updateFirebase() { const partyRef = getPartyRef(); if (!partyRef) return; const dataToSave = { characters: state.characters, sharedAssets: state.sharedAssets, sharedStorage: state.sharedStorage, logs: state.logs, itemTemplates: state.itemTemplates }; partyRef.update(dataToSave); }
         function setupDataListener() { const partyRef = getPartyRef(); if (!partyRef) return; partyRef.on('value', (snapshot) => { const data = snapshot.val(); if (data) { state.password = data.password; state.characters = data.characters || []; state.sharedAssets = data.sharedAssets || { money: 0 }; state.sharedStorage = data.sharedStorage || []; state.logs = data.logs || []; state.itemTemplates = data.itemTemplates || []; if (state.selectedCharacterId && !state.characters.find(c => c.id === state.selectedCharacterId)) { state.selectedCharacterId = null; } database.ref('party_meta/' + state.partyId + '/name').once('value', nameSnap => { state.partyName = nameSnap.val() || ''; render(); }); } else { window.location.hash = ''; } }); }
 
-        // === ヘルパー関数 (showToastを追加) ===
         function showToast(message, type = 'info') { const toast = document.createElement('div'); toast.className = `toast toast-${type}`; toast.textContent = message; toastContainer.appendChild(toast); setTimeout(() => { toast.classList.add('show'); }, 10); setTimeout(() => { toast.classList.remove('show'); toast.addEventListener('transitionend', () => toast.remove()); }, 3000); }
         const addLog = (message) => { const timestamp = new Date().toLocaleString('ja-JP'); const newLog = { id: Date.now(), timestamp, message }; if (!state.logs) state.logs = []; state.logs.unshift(newLog); };
-        const calculateCurrentWeight = (character) => { if (!character || !character.items) return 0; let totalWeight = 0; const heaviestWeapon = character.hasWeaponCase ? character.items.filter(item => item.type === '武器').sort((a, b) => b.weight - a.weight)[0] : null; if (character.hasPotionHolder) { const totalPotionCount = character.items .filter(item => item.type === 'ポーション' && item.weight === 1) .reduce((sum, item) => sum + item.quantity, 0); totalWeight += Math.max(0, totalPotionCount - 5); } if (character.hasLunchBox) { const foodItems = character.items.filter(item => item.type === '食料'); const sortedFood = [...foodItems].sort((a, b) => b.weight - a.weight); let freeItemsBudget = 5; sortedFood.forEach(foodItem => { if (freeItemsBudget <= 0) { totalWeight += foodItem.weight * foodItem.quantity; } else { const itemsToMakeFree = Math.min(foodItem.quantity, freeItemsBudget); totalWeight += (foodItem.quantity - itemsToMakeFree) * foodItem.weight; freeItemsBudget -= itemsToMakeFree; } }); } character.items.forEach(item => { if (character.hasPotionHolder && item.type === 'ポーション' && item.weight === 1) return; if (character.hasLunchBox && item.type === '食料') return; let itemWeight = item.weight * item.quantity; if (character.hasToolPouch && item.type === '道具' && item.weight === 1) { itemWeight = (item.quantity - Math.min(item.quantity, 5)) * item.weight; } else if (character.hasQuiver && item.type === '矢弾' && item.weight === 1) { itemWeight = (item.quantity - Math.min(item.quantity, 5)) * item.weight; } else if (heaviestWeapon && item.id === heaviestWeapon.id) { itemWeight = Math.max(0, item.quantity - 1) * item.weight; } totalWeight += itemWeight; }); return totalWeight; };
+        
+        // ▼▼▼ 変更点1: calculateCurrentWeight関数を新しいロジックに置き換え ▼▼▼
+        const calculateCurrentWeight = (character) => {
+            if (!character || !character.items) return 0;
+            let totalWeight = 0;
+            const heaviestWeapon = character.hasWeaponCase ? character.items.filter(item => item.type === '武器').sort((a, b) => b.weight - a.weight)[0] : null;
+
+            if (character.hasPotionHolder) {
+                const totalPotionCount = character.items.filter(item => item.type === 'ポーション' && item.weight === 1).reduce((sum, item) => sum + item.quantity, 0);
+                totalWeight += Math.max(0, totalPotionCount - 5);
+            }
+
+            if (character.hasLunchBox) {
+                const foodItems = character.items.filter(item => item.type === '食料');
+                const sortedFood = [...foodItems].sort((a, b) => b.weight - a.weight);
+                let freeItemsBudget = 5;
+                sortedFood.forEach(foodItem => {
+                    if (freeItemsBudget <= 0) {
+                        totalWeight += foodItem.weight * foodItem.quantity;
+                    } else {
+                        const itemsToMakeFree = Math.min(foodItem.quantity, freeItemsBudget);
+                        totalWeight += (foodItem.quantity - itemsToMakeFree) * foodItem.weight;
+                        freeItemsBudget -= itemsToMakeFree;
+                    }
+                });
+            }
+
+            character.items.forEach(item => {
+                if (character.hasPotionHolder && item.type === 'ポーション' && item.weight === 1) return;
+                if (character.hasLunchBox && item.type === '食料') return;
+
+                let itemWeight = item.weight * item.quantity;
+                if (character.hasToolPouch && item.type === '道具' && item.weight === 1) {
+                    itemWeight = (item.quantity - Math.min(item.quantity, 5)) * item.weight;
+                } else if (character.hasQuiver && item.type === '矢弾' && item.weight === 1) {
+                    itemWeight = (item.quantity - Math.min(item.quantity, 5)) * item.weight;
+                } else if (heaviestWeapon && item.id === heaviestWeapon.id) {
+                    itemWeight = Math.max(0, item.quantity - 1) * item.weight;
+                }
+                totalWeight += itemWeight;
+            });
+            return totalWeight;
+        };
+        // ▲▲▲ 変更ここまで ▲▲▲
+
         const getSelectedCharacter = () => { if (!state.characters) return null; return state.characters.find(c => c.id === state.selectedCharacterId); };
         
-        // === イベントハンドラ ===
-        function handleAddCharacter() { const { name, maxWeight, memo } = state.characterForm; if (name.trim() === '' || maxWeight <= 0) { showToast('名前と携帯可能重量を正しく入力してください。', 'error'); return; } const newCharacter = { id: Date.now(), name: name, maxWeight: Number(maxWeight), items: [], memo: memo || '', hasWeaponCase: false, hasPotionHolder: false, hasLunchBox: false, hasToolPouch: false, hasQuiver: false, }; if (!state.characters) state.characters = []; state.characters.push(newCharacter); if (!state.selectedCharacterId) { state.selectedCharacterId = newCharacter.id; } addLog(`${newCharacter.name}がパーティに参加しました。`); state.characterForm = { name: '', maxWeight: 0, memo: '' }; state.showCharacterModal = false; updateFirebase(); showToast(`${name}を追加しました。`, 'success'); }
+        // ▼▼▼ 変更点2: handleAddCharacterに重量軽減フラグの初期化を追加 ▼▼▼
+        function handleAddCharacter() {
+            const { name, maxWeight, memo } = state.characterForm;
+            if (name.trim() === '' || maxWeight <= 0) { showToast('名前と携帯可能重量を正しく入力してください。', 'error'); return; }
+            const newCharacter = {
+                id: Date.now(), name: name, maxWeight: Number(maxWeight), items: [], memo: memo || '',
+                hasWeaponCase: false, hasPotionHolder: false, hasLunchBox: false, hasToolPouch: false, hasQuiver: false,
+            };
+            if (!state.characters) state.characters = [];
+            state.characters.push(newCharacter);
+            if (!state.selectedCharacterId) { state.selectedCharacterId = newCharacter.id; }
+            addLog(`${newCharacter.name}がパーティに参加しました。`);
+            state.characterForm = { name: '', maxWeight: 0, memo: '' };
+            state.showCharacterModal = false;
+            updateFirebase();
+            showToast(`${name}を追加しました。`, 'success');
+        }
+        // ▲▲▲ 変更ここまで ▲▲▲
+
+        // ▼▼▼ 変更点3: handleToggleHolder関数を追加 ▼▼▼
+        function handleToggleHolder(holderType) {
+            const selectedCharacter = getSelectedCharacter();
+            if (!selectedCharacter) return;
+            selectedCharacter[holderType] = !selectedCharacter[holderType];
+            updateFirebase();
+        }
+        // ▲▲▲ 変更ここまで ▲▲▲
+
+        // --- (他のイベントハンドラは変更なしのため省略) ---
         function handleAddItem(target = 'character') { const { name, weight, quantity, sellPrice, type, memo } = state.itemForm; if (name.trim() === '') { showToast('アイテム名を入力してください。', 'error'); return; } const newItem = { id: Date.now(), name, weight: Number(weight), quantity: Number(quantity), sellPrice: Number(sellPrice), type, memo: memo || '' }; if (target === 'storage') { if (!state.sharedStorage) state.sharedStorage = []; state.sharedStorage.push(newItem); addLog(`共有倉庫に${newItem.name}(${newItem.quantity}個)が追加されました。`); } else { const selectedCharacter = getSelectedCharacter(); if (!selectedCharacter) return; if (!selectedCharacter.items) selectedCharacter.items = []; selectedCharacter.items.push(newItem); addLog(`${selectedCharacter.name}が${newItem.name}(${newItem.quantity}個)を獲得しました。`); } state.itemForm = { name: '', weight: 0, quantity: 1, sellPrice: 0, type: '武器', memo: '' }; state.showItemModal = false; updateFirebase(); showToast(`${name}を追加しました。`, 'success'); }
         function handleUpdateCharacterMemo(characterId, memo) { const character = state.characters.find(c => c.id === characterId); if (character) { character.memo = memo; state.editingCharacterMemoId = null; updateFirebase(); } }
         function handleDeleteCharacter(characterId, event) { event.stopPropagation(); const characterToDelete = state.characters.find(c => c.id === characterId); if (!characterToDelete) return; if (window.confirm(`${characterToDelete.name} を削除しますか？\nこのキャラクターが所持しているアイテムも全て削除されます。`)) { const characterName = characterToDelete.name; state.characters = state.characters.filter(c => c.id !== characterId); addLog(`${characterName} がパーティから離脱しました。`); updateFirebase(); showToast(`${characterName}を削除しました。`, 'info'); } }
@@ -109,12 +178,9 @@
         function handleJoinParty(partyId, meta) { if (meta.hasPassword) { const inputPassword = prompt(`「${meta.name}」に参加するにはパスワードが必要です:\nパスワードを入力してください`); if (inputPassword === null) return; database.ref('parties/' + partyId + '/password').once('value', snapshot => { const correctPassword = snapshot.val(); if (inputPassword === correctPassword) { window.location.hash = partyId; } else { showToast('パスワードが違います。', 'error'); } }); } else { window.location.hash = partyId; } }
         function handleLeaveParty() { if (window.confirm('現在のパーティから退出しますか？\n最初の画面に戻ります。')) { window.location.hash = ''; } }
         function handleDeleteParty() { const partyId = state.partyId; if (!partyId) return; if (window.confirm('本当にこのパーティーを削除しますか？\n全てのデータが失われ、この操作は元に戻せません。')) { const partyDataRef = database.ref('parties/' + partyId); const partyMetaRef = database.ref('party_meta/' + partyId); Promise.all([ partyDataRef.remove(), partyMetaRef.remove() ]).then(() => { showToast('パーティーを削除しました。', 'info'); window.location.hash = ''; }).catch(error => { console.error("パーティーの削除に失敗しました:", error); showToast('エラーによりパーティーの削除に失敗しました。', 'error'); }); } }
-        function handleShowPassword() { if (state.password) { alert(`このパーティーのパスワードは「 ${state.password} 」です。`); } else { alert('このパーティーにパスワードは設定されていません。'); } }
         function openMoveItemModal(item, source) { state.moveItemData = { item: JSON.parse(JSON.stringify(item)), quantity: 1, source: source }; state.showMoveModal = true; render(); }
-
-        // --- (その他の既存イベントハンドラは alert を showToast に変更する程度なので省略) ---
         function handleUseItem(itemId, source = 'character') { const itemSource = source === 'storage' ? state.sharedStorage : getSelectedCharacter()?.items; const item = itemSource?.find(i => i.id === itemId); if (!item) return; const sourceName = source === 'storage' ? '共有倉庫' : getSelectedCharacter().name; const amountToUse = 1; if (item.quantity < amountToUse) { showToast('アイテムが足りません。', 'error'); return; } item.quantity -= amountToUse; addLog(`${sourceName}が「${item.name}」を${amountToUse}個使用しました。`); if (item.quantity <= 0) { if (source === 'storage') { state.sharedStorage = itemSource.filter(i => i.id !== itemId); } else { getSelectedCharacter().items = itemSource.filter(i => i.id !== itemId); } addLog(`「${item.name}」を使い切りました。`); } updateFirebase(); showToast(`${item.name}を使用しました。`, 'info'); }
-        
+
         function render() {
             document.body.className = `theme-${state.theme}`;
             if (!state.partyId) { appContainer.innerHTML = renderLobby() + renderModals(); return; }
@@ -168,6 +234,20 @@
                                     <div> <h2 class="text-3xl font-semibold text-title">${selectedCharacter.name}の所持品</h2> <p class="text-lg ${isOverWeight ? 'text-red-600 font-semibold' : 'text-muted'}"> 現在重量: ${Math.floor(currentWeight)} / ${Math.floor(selectedCharacter.maxWeight)} ${isOverWeight ? '(超過!)' : ''} </p> </div>
                                     <button onclick="state.showItemModal = 'character'; render();" class="btn btn-secondary text-white px-4 py-2 rounded-md flex items-center gap-2 text-base"> ${icons.plus} アイテム追加 </button>
                                 </div>
+                                
+                                <!-- ▼▼▼ 変更点4: 特殊アイテムのUIを追加 ▼▼▼ -->
+                                <div class="mb-4 p-3 bg-black/5 rounded-lg border border-color">
+                                     <h3 class="font-semibold mb-2 text-title text-lg">特殊アイテム</h3>
+                                     <div class="flex flex-wrap gap-2">
+                                        <button onclick="handleToggleHolder('hasWeaponCase')" class="px-3 py-1 text-sm rounded-full transition-colors text-white ${selectedCharacter.hasWeaponCase ? 'bg-indigo-500 hover:bg-indigo-600' : 'bg-gray-500 hover:bg-gray-600'}"> ウェポンケース ${selectedCharacter.hasWeaponCase ? 'ON' : 'OFF'} </button>
+                                        <button onclick="handleToggleHolder('hasPotionHolder')" class="px-3 py-1 text-sm rounded-full transition-colors text-white ${selectedCharacter.hasPotionHolder ? 'bg-sky-500 hover:bg-sky-600' : 'bg-gray-500 hover:bg-gray-600'}"> ポーションホルダー ${selectedCharacter.hasPotionHolder ? 'ON' : 'OFF'} </button>
+                                        <button onclick="handleToggleHolder('hasLunchBox')" class="px-3 py-1 text-sm rounded-full transition-colors text-white ${selectedCharacter.hasLunchBox ? 'bg-amber-500 hover:bg-amber-600' : 'bg-gray-500 hover:bg-gray-600'}"> ランチボックス ${selectedCharacter.hasLunchBox ? 'ON' : 'OFF'} </button>
+                                        <button onclick="handleToggleHolder('hasToolPouch')" class="px-3 py-1 text-sm rounded-full transition-colors text-white ${selectedCharacter.hasToolPouch ? 'bg-teal-500 hover:bg-teal-600' : 'bg-gray-500 hover:bg-gray-600'}"> 小道具入れ ${selectedCharacter.hasToolPouch ? 'ON' : 'OFF'} </button>
+                                        <button onclick="handleToggleHolder('hasQuiver')" class="px-3 py-1 text-sm rounded-full transition-colors text-white ${selectedCharacter.hasQuiver ? 'bg-orange-500 hover:bg-orange-600' : 'bg-gray-500 hover:bg-gray-600'}"> 矢筒 ${selectedCharacter.hasQuiver ? 'ON' : 'OFF'} </button>
+                                     </div>
+                                </div>
+                                <!-- ▲▲▲ 変更ここまで ▲▲▲ -->
+
                                 <div class="hidden md:block overflow-x-auto">
                                     <table class="w-full border-collapse border-color text-lg">
                                         <thead><tr class="bg-black/5">

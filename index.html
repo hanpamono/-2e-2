@@ -69,13 +69,13 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // === SVGアイコン定義 (変更なし) ===
-        const icons = { plus: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`, trash: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`, arrowRight: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`, edit: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`, grip: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 cursor-move"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>`, coin: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="8"></line></svg>`, use: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 11v10"/><path d="m19 5-7 7-7-7"/></svg>`, book: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>`, logOut: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>`, lock: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>` };
+        // <!-- ▼▼▼ 変更点1: 新しいアイコンを追加 ▼▼▼ -->
+        const icons = { plus: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`, trash: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`, arrowRight: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`, edit: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`, grip: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 cursor-move"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>`, coin: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="8"></line></svg>`, use: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 11v10"/><path d="m19 5-7 7-7-7"/></svg>`, book: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>`, logOut: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>`, lock: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`, eye: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`, eyeOff: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>` };
 
-        // === アプリケーションの状態管理 (変更なし) ===
+        // <!-- ▼▼▼ 変更点2: `showPassword` を state に追加 ▼▼▼ -->
         let state = {
             partyId: null, partyList: [], showPartyCreateModal: false,
-            partyCreateForm: { name: '', password: '' },
+            partyCreateForm: { name: '', password: '' }, showPassword: false,
             characters: [], sharedAssets: { money: 0 }, itemTemplates: [], selectedCharacterId: null, logs: [],
             sort: { key: 'name', order: 'asc' }, theme: 'dark', showCharacterModal: false, showItemModal: false, showMoveModal: false, showTemplateModal: false,
             moveItemData: { item: null, quantity: 1 }, characterForm: { name: '', maxWeight: 0 },
@@ -118,34 +118,15 @@
         function handleDeleteTemplate(templateId) { if (!window.confirm("このテンプレートを削除しますか？")) return; state.itemTemplates = state.itemTemplates.filter(t => t.id !== templateId); updateFirebase(); }
         function handleSelectTemplate(templateId) { if (!templateId) { state.itemForm = { name: '', weight: 0, quantity: 1, sellPrice: 0, type: '武器' }; } else { const template = state.itemTemplates.find(t => t.id === Number(templateId)); if (template) { state.itemForm = { ...state.itemForm, name: template.name, weight: template.weight, sellPrice: template.sellPrice, type: template.type }; } } render(); }
 
-        // === パーティ管理用のイベントハンドラ ===
+        // === パーティ管理用のイベントハンドラ (変更なし) ===
         function handleConfirmCreateParty() { const { name, password } = state.partyCreateForm; if (name.trim() === '') { alert('パーティ名を入力してください。'); return; } const newPartyId = 'p' + Date.now().toString(36) + Math.random().toString(36).substring(2, 7); const partyMetaRef = database.ref('party_meta/' + newPartyId); const partyDataRef = database.ref('parties/' + newPartyId); const initialPartyData = { characters: [], sharedAssets: { money: 0 }, logs: [], itemTemplates: [], password: password || '' }; const partyMetaData = { name: name, hasPassword: !!password }; partyDataRef.set(initialPartyData).then(() => { partyMetaRef.set(partyMetaData).then(() => { state.partyCreateForm = { name: '', password: '' }; state.showPartyCreateModal = false; window.location.hash = newPartyId; }); }); }
         function handleJoinParty(partyId, meta) { if (meta.hasPassword) { const inputPassword = prompt(`「${meta.name}」に参加するにはパスワードが必要です:\nパスワードを入力してください`); if (inputPassword === null) return; database.ref('parties/' + partyId + '/password').once('value', snapshot => { const correctPassword = snapshot.val(); if (inputPassword === correctPassword) { window.location.hash = partyId; } else { alert('パスワードが違います。'); } }); } else { window.location.hash = partyId; } }
         function handleLeaveParty() { if (window.confirm('現在のパーティから退出しますか？\n最初の画面に戻ります。')) { window.location.hash = ''; } }
+        function handleDeleteParty() { const partyId = state.partyId; if (!partyId) return; if (window.confirm('本当にこのパーティーを削除しますか？\nキャラクターやアイテムなど、全てのデータが失われ、この操作は元に戻せません。')) { const partyDataRef = database.ref('parties/' + partyId); const partyMetaRef = database.ref('party_meta/' + partyId); Promise.all([ partyDataRef.remove(), partyMetaRef.remove() ]).then(() => { alert('パーティーを削除しました。'); window.location.hash = ''; }).catch(error => { console.error("パーティーの削除に失敗しました:", error); alert('エラーによりパーティーの削除に失敗しました。'); }); } }
         
-        // ▼▼▼ 変更点1: 新しいイベントハンドラを追加 ▼▼▼
-        function handleDeleteParty() {
-            const partyId = state.partyId;
-            if (!partyId) return;
-
-            if (window.confirm('本当にこのパーティーを削除しますか？\nキャラクターやアイテムなど、全てのデータが失われ、この操作は元に戻せません。')) {
-                const partyDataRef = database.ref('parties/' + partyId);
-                const partyMetaRef = database.ref('party_meta/' + partyId);
-
-                Promise.all([
-                    partyDataRef.remove(),
-                    partyMetaRef.remove()
-                ]).then(() => {
-                    alert('パーティーを削除しました。');
-                    window.location.hash = '';
-                }).catch(error => {
-                    console.error("パーティーの削除に失敗しました:", error);
-                    alert('エラーによりパーティーの削除に失敗しました。');
-                });
-            }
-        }
-        // ▲▲▲ 変更ここまで ▲▲▲
-
+        // <!-- ▼▼▼ 変更点3: 新しいイベントハンドラを追加 ▼▼▼ -->
+        function handleTogglePasswordVisibility() { state.showPassword = !state.showPassword; render(); }
+        
         function render() {
             document.body.className = `theme-${state.theme}`;
             if (!state.partyId) { appContainer.innerHTML = renderLobby() + renderModals(); return; }
@@ -159,6 +140,7 @@
             
             appContainer.innerHTML = `
                 <div class="max-w-7xl mx-auto">
+                    <!-- ▼▼▼ 変更点4: 不要なコメントを削除し、レイアウトを微調整 ▼▼▼ -->
                     <div class="flex flex-wrap justify-between items-center mb-6 gap-y-4">
                         <h1 class="text-4xl md:text-5xl font-bold text-title" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.2);"> アイテム管理ツール </h1>
                         <div class="flex items-center gap-2 flex-wrap">
@@ -167,8 +149,6 @@
                             <button onclick="handleToggleTheme(); render()" class="btn bg-gray-500/10 hover:bg-gray-500/20 text-sm px-4 py-2 rounded-lg text-body"> ${state.theme === 'dark' ? 'ライトテーマへ' : 'ダークテーマへ'} </button>
                         </div>
                     </div>
-                    
-                    {/* --- ▼▼▼ 削除: パーティIDと招待リンクの表示エリアを削除 ▼▼▼ --- */}
                     
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
                         <div>
@@ -242,14 +222,26 @@
                         </div>
                     </div>
 
-                    <!-- ▼▼▼ 変更点2: パーティー削除ボタンを追加 ▼▼▼ -->
-                    <div class="mt-8 text-center">
+                    <!-- ▼▼▼ 変更点5: パーティー管理エリアを追加 ▼▼▼ -->
+                    <div class="mt-8 card-bg rounded-lg shadow-lg p-4 flex flex-wrap justify-between items-center gap-4">
+                        <div>
+                            ${state.password ? `
+                                <div class="flex items-center gap-2">
+                                    <span class="text-muted">パーティパスワード:</span>
+                                    <strong class="text-lg font-mono text-body">${state.showPassword ? state.password : '********'}</strong>
+                                    <button onclick="handleTogglePasswordVisibility()" class="btn p-2 rounded-full hover-bg" title="パスワードの表示/非表示">
+                                        ${state.showPassword ? icons.eyeOff : icons.eye}
+                                    </button>
+                                </div>
+                            ` : `
+                                <span class="text-muted">このパーティーにパスワードは設定されていません。</span>
+                            `}
+                        </div>
                         <button onclick="handleDeleteParty()" 
-                                class="btn bg-red-500/80 hover:bg-red-500 text-white text-base px-4 py-2 rounded-lg flex items-center gap-2 mx-auto">
+                                class="btn bg-red-500/80 hover:bg-red-500 text-white text-base px-4 py-2 rounded-lg flex items-center gap-2">
                             ${icons.trash} このパーティーを削除
                         </button>
                     </div>
-                    <!-- ▲▲▲ 変更ここまで ▲▲▲ -->
                 </div>
                 ${renderModals()}
             `;
@@ -282,7 +274,7 @@
             } else {
                 if (state.partyId) {
                     database.ref('parties/' + state.partyId).off();
-                    Object.assign(state, { partyId: null, characters: [], sharedAssets: { money: 0 }, logs: [], itemTemplates: [], selectedCharacterId: null });
+                    Object.assign(state, { partyId: null, characters: [], sharedAssets: { money: 0 }, logs: [], itemTemplates: [], selectedCharacterId: null, showPassword: false });
                 }
                 fetchPartyList();
             }

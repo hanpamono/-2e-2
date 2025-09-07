@@ -69,10 +69,10 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // === SVGアイコン定義 (lockアイコンを追加) ===
+        // === SVGアイコン定義 (変更なし) ===
         const icons = { plus: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`, trash: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`, arrowRight: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`, edit: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`, grip: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 cursor-move"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>`, coin: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="8"></line></svg>`, use: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 11v10"/><path d="m19 5-7 7-7-7"/></svg>`, book: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>`, link: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>`, logOut: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>`, lock: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>` };
 
-        // === アプリケーションの状態管理 (partyList, showPartyCreateModal, partyCreateForm を追加) ===
+        // === アプリケーションの状態管理 (変更なし) ===
         let state = {
             partyId: null, partyList: [], showPartyCreateModal: false,
             partyCreateForm: { name: '', password: '' },
@@ -95,7 +95,7 @@
         const calculateCurrentWeight = (character) => { if (!character || !character.items) return 0; let totalWeight = 0; const heaviestWeapon = character.hasWeaponCase ? character.items.filter(item => item.type === '武器').sort((a, b) => b.weight - a.weight)[0] : null; if (character.hasPotionHolder) { const totalPotionCount = character.items .filter(item => item.type === 'ポーション' && item.weight === 1) .reduce((sum, item) => sum + item.quantity, 0); totalWeight += Math.max(0, totalPotionCount - 5); } if (character.hasLunchBox) { const foodItems = character.items.filter(item => item.type === '食料'); const sortedFood = [...foodItems].sort((a, b) => b.weight - a.weight); let freeItemsBudget = 5; sortedFood.forEach(foodItem => { if (freeItemsBudget <= 0) { totalWeight += foodItem.weight * foodItem.quantity; } else { const itemsToMakeFree = Math.min(foodItem.quantity, freeItemsBudget); totalWeight += (foodItem.quantity - itemsToMakeFree) * foodItem.weight; freeItemsBudget -= itemsToMakeFree; } }); } character.items.forEach(item => { if (character.hasPotionHolder && item.type === 'ポーション' && item.weight === 1) return; if (character.hasLunchBox && item.type === '食料') return; let itemWeight = item.weight * item.quantity; if (character.hasToolPouch && item.type === '道具' && item.weight === 1) { itemWeight = (item.quantity - Math.min(item.quantity, 5)) * item.weight; } else if (character.hasQuiver && item.type === '矢弾' && item.weight === 1) { itemWeight = (item.quantity - Math.min(item.quantity, 5)) * item.weight; } else if (heaviestWeapon && item.id === heaviestWeapon.id) { itemWeight = Math.max(0, item.quantity - 1) * item.weight; } totalWeight += itemWeight; }); return totalWeight; };
         const getSelectedCharacter = () => { if (!state.characters) return null; return state.characters.find(c => c.id === state.selectedCharacterId); };
         
-        // === イベントハンドラ (既存のものは変更なし) ===
+        // === イベントハンドラ (変更なし) ===
         function openEditCharacterModal(characterId, event) { event.stopPropagation(); const characterToEdit = state.characters.find(c => c.id === characterId); if (!characterToEdit) return; state.editingCharacterId = characterId; state.editCharacterForm.maxWeight = characterToEdit.maxWeight; state.showEditCharacterModal = true; render(); }
         function handleDragStart(characterId, event) { state.draggingCharacterId = characterId; event.target.classList.add('dragging'); } function handleDragOver(event) { event.preventDefault(); const targetElement = event.target.closest('[draggable="true"]'); if (targetElement) { targetElement.classList.add('drag-over'); } } function handleDragLeave(event) { const targetElement = event.target.closest('[draggable="true"]'); if (targetElement) { targetElement.classList.remove('drag-over'); } } function handleDragEnd(event) { event.target.classList.remove('dragging'); document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over')); }
         function handleDrop(targetCharacterId, event) { event.preventDefault(); const draggedId = state.draggingCharacterId; if (draggedId === targetCharacterId) return; const draggedItem = state.characters.find(c => c.id === draggedId); const remainingItems = state.characters.filter(c => c.id !== draggedId); const targetIndex = remainingItems.findIndex(c => c.id === targetCharacterId); remainingItems.splice(targetIndex, 0, draggedItem); state.characters = remainingItems; const targetElement = event.target.closest('[draggable="true"]'); if (targetElement) targetElement.classList.remove('drag-over'); state.draggingCharacterId = null; updateFirebase(); }
@@ -118,53 +118,24 @@
         function handleDeleteTemplate(templateId) { if (!window.confirm("このテンプレートを削除しますか？")) return; state.itemTemplates = state.itemTemplates.filter(t => t.id !== templateId); updateFirebase(); }
         function handleSelectTemplate(templateId) { if (!templateId) { state.itemForm = { name: '', weight: 0, quantity: 1, sellPrice: 0, type: '武器' }; } else { const template = state.itemTemplates.find(t => t.id === Number(templateId)); if (template) { state.itemForm = { ...state.itemForm, name: template.name, weight: template.weight, sellPrice: template.sellPrice, type: template.type }; } } render(); }
 
-        // === パーティ管理用のイベントハンドラ (大幅に変更) ===
-        function handleConfirmCreateParty() {
-            const { name, password } = state.partyCreateForm;
-            if (name.trim() === '') { alert('パーティ名を入力してください。'); return; }
-
-            const newPartyId = 'p' + Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
-            const partyMetaRef = database.ref('party_meta/' + newPartyId);
-            const partyDataRef = database.ref('parties/' + newPartyId);
-
-            const initialPartyData = { characters: [], sharedAssets: { money: 0 }, logs: [], itemTemplates: [], password: password || '' };
-            const partyMetaData = { name: name, hasPassword: !!password };
-
-            partyDataRef.set(initialPartyData).then(() => {
-                partyMetaRef.set(partyMetaData).then(() => {
-                    state.partyCreateForm = { name: '', password: '' };
-                    state.showPartyCreateModal = false;
-                    window.location.hash = newPartyId;
-                });
-            });
-        }
-
-        function handleJoinParty(partyId, meta) {
-            if (meta.hasPassword) {
-                const inputPassword = prompt(`「${meta.name}」に参加するにはパスワードが必要です:\nパスワードを入力してください`);
-                if (inputPassword === null) return; // キャンセルされた場合
-
-                database.ref('parties/' + partyId + '/password').once('value', snapshot => {
-                    const correctPassword = snapshot.val();
-                    if (inputPassword === correctPassword) {
-                        window.location.hash = partyId;
-                    } else {
-                        alert('パスワードが違います。');
-                    }
-                });
-            } else {
-                window.location.hash = partyId;
-            }
-        }
-        
+        // === パーティ管理用のイベントハンドラ (変更なし) ===
+        function handleConfirmCreateParty() { const { name, password } = state.partyCreateForm; if (name.trim() === '') { alert('パーティ名を入力してください。'); return; } const newPartyId = 'p' + Date.now().toString(36) + Math.random().toString(36).substring(2, 7); const partyMetaRef = database.ref('party_meta/' + newPartyId); const partyDataRef = database.ref('parties/' + newPartyId); const initialPartyData = { characters: [], sharedAssets: { money: 0 }, logs: [], itemTemplates: [], password: password || '' }; const partyMetaData = { name: name, hasPassword: !!password }; partyDataRef.set(initialPartyData).then(() => { partyMetaRef.set(partyMetaData).then(() => { state.partyCreateForm = { name: '', password: '' }; state.showPartyCreateModal = false; window.location.hash = newPartyId; }); }); }
+        function handleJoinParty(partyId, meta) { if (meta.hasPassword) { const inputPassword = prompt(`「${meta.name}」に参加するにはパスワードが必要です:\nパスワードを入力してください`); if (inputPassword === null) return; database.ref('parties/' + partyId + '/password').once('value', snapshot => { const correctPassword = snapshot.val(); if (inputPassword === correctPassword) { window.location.hash = partyId; } else { alert('パスワードが違います。'); } }); } else { window.location.hash = partyId; } }
         function handleCopyPartyLink() { navigator.clipboard.writeText(window.location.href).then(() => alert('パーティの招待リンクをコピーしました！')).catch(err => alert('コピーに失敗しました。')); }
         function handleCopyPartyId() { navigator.clipboard.writeText(state.partyId).then(() => alert('パーティIDをコピーしました！')).catch(err => alert('コピーに失敗しました。')); }
         function handleLeaveParty() { if (window.confirm('現在のパーティから退出しますか？\n最初の画面に戻ります。')) { window.location.hash = ''; } }
         
+        // ▼▼▼ 【修正点】render関数を修正 ▼▼▼
         function render() {
             document.body.className = `theme-${state.theme}`;
-            if (!state.partyId) { appContainer.innerHTML = renderLobby(); return; }
 
+            // パーティIDがない場合は、ロビー画面とモーダルを描画
+            if (!state.partyId) {
+                appContainer.innerHTML = renderLobby() + renderModals();
+                return;
+            }
+
+            // --- ここから下はパーティIDがある場合のメイン画面描画 (内容は変更なし) ---
             const selectedCharacter = state.characters ? getSelectedCharacter() : null;
             const currentWeight = selectedCharacter ? calculateCurrentWeight(selectedCharacter) : 0;
             const isOverWeight = selectedCharacter ? currentWeight > selectedCharacter.maxWeight : false;
@@ -189,7 +160,6 @@
                         </div>
                         <button onclick="handleCopyPartyLink()" class="btn btn-primary text-white text-base px-4 py-2 rounded-lg flex items-center gap-2" title="仲間を招待するためのリンクをコピーします"> ${icons.link} 招待リンクをコピー </button>
                     </div>
-                    {/* --- (メイン画面のHTMLは変更なし) --- */}
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
                         <div>
                             <div class="card-bg rounded-lg shadow-lg p-6 mb-6">
@@ -266,67 +236,13 @@
             `;
         }
         
-        // === パーティ作成・参加画面の描画 (ロビー画面) ===
-        function renderLobby() {
-            const partyListHtml = state.partyList.map(party => `
-                <button onclick='handleJoinParty("${party.id}", ${JSON.stringify(party.meta)})' class="w-full btn border-color text-left p-4 rounded-lg hover-bg flex justify-between items-center">
-                    <span class="text-xl text-body">${party.meta.name}</span>
-                    ${party.meta.hasPassword ? `<span class="text-muted">${icons.lock}</span>` : ''}
-                </button>
-            `).join('');
-
-            return `
-                <div class="flex items-center justify-center min-h-screen">
-                    <div class="w-full max-w-lg mx-auto">
-                        <div class="card-bg rounded-lg shadow-2xl p-8">
-                            <h1 class="text-3xl md:text-4xl font-bold text-center text-title mb-8">アイテム管理ツール</h1>
-                            <div class="space-y-6">
-                                <div>
-                                    <button onclick="state.showPartyCreateModal = true; render();" class="w-full btn btn-secondary text-white rounded-lg py-3 text-lg font-bold flex items-center justify-center gap-2">
-                                        ${icons.plus} 新しいパーティを作成
-                                    </button>
-                                </div>
-                                <div>
-                                    <h2 class="text-2xl font-semibold text-center text-title mb-4 border-b border-color pb-2">参加可能なパーティ</h2>
-                                    <div class="space-y-3 max-h-64 overflow-y-auto pr-2">
-                                        ${state.partyList.length > 0 ? partyListHtml : '<p class="text-center text-muted py-4">現在、参加可能なパーティーはありません。</p>'}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
+        // === パーティ作成・参加画面の描画 (変更なし) ===
+        function renderLobby() { const partyListHtml = state.partyList.map(party => `<button onclick='handleJoinParty("${party.id}", ${JSON.stringify(party.meta)})' class="w-full btn border-color text-left p-4 rounded-lg hover-bg flex justify-between items-center"> <span class="text-xl text-body">${party.meta.name}</span> ${party.meta.hasPassword ? `<span class="text-muted">${icons.lock}</span>` : ''} </button>`).join(''); return `<div class="flex items-center justify-center min-h-screen"> <div class="w-full max-w-lg mx-auto"> <div class="card-bg rounded-lg shadow-2xl p-8"> <h1 class="text-3xl md:text-4xl font-bold text-center text-title mb-8">アイテム管理ツール</h1> <div class="space-y-6"> <div> <button onclick="state.showPartyCreateModal = true; render();" class="w-full btn btn-secondary text-white rounded-lg py-3 text-lg font-bold flex items-center justify-center gap-2"> ${icons.plus} 新しいパーティを作成 </button> </div> <div> <h2 class="text-2xl font-semibold text-center text-title mb-4 border-b border-color pb-2">参加可能なパーティ</h2> <div class="space-y-3 max-h-64 overflow-y-auto pr-2"> ${state.partyList.length > 0 ? partyListHtml : '<p class="text-center text-muted py-4">現在、参加可能なパーティーはありません。</p>'} </div> </div> </div> </div> </div> </div>`; }
         
-        // === モーダル描画関数 (パーティ作成モーダルを追加) ===
+        // === モーダル描画関数 (変更なし) ===
         function renderModals() {
             let modalHTML = '';
-            
-            if (state.showPartyCreateModal) {
-                modalHTML += `
-                <div class="modal-overlay">
-                    <div class="card-bg p-6 rounded-lg w-96">
-                        <h3 class="text-xl font-semibold mb-4 text-title">新しいパーティを作成</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-base font-medium mb-1 text-muted">パーティ名</label>
-                                <input type="text" value="${state.partyCreateForm.name}" oninput="state.partyCreateForm.name = this.value" class="w-full input-bg rounded px-3 py-2" placeholder="例: 冒険者ギルド「暁」">
-                            </div>
-                            <div>
-                                <label class="block text-base font-medium mb-1 text-muted">パスワード (任意)</label>
-                                <input type="password" value="${state.partyCreateForm.password}" oninput="state.partyCreateForm.password = this.value" class="w-full input-bg rounded px-3 py-2" placeholder="設定しない場合は空欄">
-                            </div>
-                        </div>
-                        <div class="flex justify-end space-x-2 mt-6">
-                            <button onclick="state.showPartyCreateModal = false; render();" class="btn px-4 py-2 ${state.theme === 'dark' ? 'bg-stone-700 hover:bg-stone-600' : 'bg-gray-200 hover:bg-gray-300 text-gray-800'} rounded text-base">キャンセル</button>
-                            <button onclick="handleConfirmCreateParty()" class="btn px-4 py-2 btn-secondary text-white rounded text-base">作成</button>
-                        </div>
-                    </div>
-                </div>`;
-            }
-
-            // --- 既存のモーダル (変更なし) ---
+            if (state.showPartyCreateModal) { modalHTML += `<div class="modal-overlay"> <div class="card-bg p-6 rounded-lg w-96"> <h3 class="text-xl font-semibold mb-4 text-title">新しいパーティを作成</h3> <div class="space-y-4"> <div> <label class="block text-base font-medium mb-1 text-muted">パーティ名</label> <input type="text" value="${state.partyCreateForm.name}" oninput="state.partyCreateForm.name = this.value" class="w-full input-bg rounded px-3 py-2" placeholder="例: 冒険者ギルド「暁」"> </div> <div> <label class="block text-base font-medium mb-1 text-muted">パスワード (任意)</label> <input type="password" value="${state.partyCreateForm.password}" oninput="state.partyCreateForm.password = this.value" class="w-full input-bg rounded px-3 py-2" placeholder="設定しない場合は空欄"> </div> </div> <div class="flex justify-end space-x-2 mt-6"> <button onclick="state.showPartyCreateModal = false; render();" class="btn px-4 py-2 ${state.theme === 'dark' ? 'bg-stone-700 hover:bg-stone-600' : 'bg-gray-200 hover:bg-gray-300 text-gray-800'} rounded text-base">キャンセル</button> <button onclick="handleConfirmCreateParty()" class="btn px-4 py-2 btn-secondary text-white rounded text-base">作成</button> </div> </div> </div>`; }
             if (state.showCharacterModal) { modalHTML += `<div class="modal-overlay"> <div class="card-bg p-6 rounded-lg w-96"> <h3 class="text-xl font-semibold mb-4 text-title">キャラクター追加</h3> <div class="space-y-4"> <div> <label class="block text-base font-medium mb-1 text-muted">キャラクター名</label> <input type="text" value="${state.characterForm.name}" oninput="state.characterForm.name = this.value" class="w-full input-bg rounded px-3 py-2"> </div> <div> <label class="block text-base font-medium mb-1 text-muted">携帯可能重量</label> <input type="number" min="0" value="${state.characterForm.maxWeight}" oninput="state.characterForm.maxWeight = Number(this.value)" class="w-full input-bg rounded px-3 py-2"> </div> </div> <div class="flex justify-end space-x-2 mt-6"> <button onclick="state.showCharacterModal = false; render();" class="btn px-4 py-2 ${state.theme === 'dark' ? 'bg-stone-700 hover:bg-stone-600' : 'bg-gray-200 hover:bg-gray-300 text-gray-800'} rounded text-base">キャンセル</button> <button onclick="handleAddCharacter()" class="btn px-4 py-2 btn-secondary text-white rounded text-base">追加</button> </div> </div> </div>`; }
             if (state.showItemModal) { modalHTML += `<div class="modal-overlay"> <div class="card-bg p-6 rounded-lg w-96"> <h3 class="text-xl font-semibold mb-4 text-title">アイテム追加</h3> <div class="space-y-4"> <div> <label class="block text-base font-medium mb-1 text-muted">図鑑から選ぶ</label> <select onchange="handleSelectTemplate(this.value)" class="w-full input-bg rounded px-3 py-2"><option value="">カスタムアイテム</option>${state.itemTemplates.map(t => `<option value="${t.id}">${t.name}</option>`).join('')}</select> </div> <hr class="border-color"> <div> <label class="block text-base font-medium mb-1 text-muted">アイテム名</label> <input type="text" value="${state.itemForm.name}" oninput="state.itemForm.name = this.value" class="w-full input-bg rounded px-3 py-2"> </div> <div class="grid grid-cols-2 gap-4"> <div> <label class="block text-base font-medium mb-1 text-muted">重量</label> <input type="number" min="0" step="1" value="${state.itemForm.weight}" oninput="this.value = Math.floor(this.value || 0); state.itemForm.weight = Number(this.value);" class="w-full input-bg rounded px-3 py-2"/> </div> <div> <label class="block text-base font-medium mb-1 text-muted">個数</label> <input type="number" min="1" value="${state.itemForm.quantity}" oninput="state.itemForm.quantity = Number(this.value)" class="w-full input-bg rounded px-3 py-2"/> </div> </div> <div> <label class="block text-base font-medium mb-1 text-muted">売却金額</label> <input type="number" min="0" value="${state.itemForm.sellPrice}" oninput="state.itemForm.sellPrice = Number(this.value)" class="w-full input-bg rounded px-3 py-2"/> </div> <div> <label class="block text-base font-medium mb-1 text-muted">種類</label> <select onchange="state.itemForm.type = this.value" class="w-full input-bg rounded px-3 py-2"> <option value="武器" ${state.itemForm.type === '武器' ? 'selected' : ''}>武器</option> <option value="ポーション" ${state.itemForm.type === 'ポーション' ? 'selected' : ''}>ポーション</option> <option value="食料" ${state.itemForm.type === '食料' ? 'selected' : ''}>食料</option> <option value="道具" ${state.itemForm.type === '道具' ? 'selected' : ''}>道具</option> <option value="矢弾" ${state.itemForm.type === '矢弾' ? 'selected' : ''}>矢弾</option> <option value="その他" ${state.itemForm.type === 'その他' ? 'selected' : ''}>その他</option> </select> </div> </div> <div class="flex justify-end space-x-2 mt-6"> <button onclick="state.showItemModal = false; state.itemForm = { name: '', weight: 0, quantity: 1, sellPrice: 0, type: '武器' }; render();" class="btn px-4 py-2 ${state.theme === 'dark' ? 'bg-stone-700 hover:bg-stone-600' : 'bg-gray-200 hover:bg-gray-300 text-gray-800'} rounded text-base">キャンセル</button> <button onclick="handleAddItem()" class="btn px-4 py-2 btn-secondary text-white rounded text-base">追加</button> </div> </div> </div>`; }
             if (state.showMoveModal && state.moveItemData.item) { modalHTML += `<div class="modal-overlay"> <div class="card-bg p-6 rounded-lg w-96"> <h3 class="text-xl font-semibold mb-4 text-title">アイテム移動</h3> <p class="mb-2 text-muted text-lg"><strong>${state.moveItemData.item.name}</strong> を誰に渡しますか？</p> <div class="mb-4"> <label class="block text-base font-medium mb-1 text-muted">渡す個数 (最大: ${state.moveItemData.item.quantity})</label> <input type="number" min="1" max="${state.moveItemData.item.quantity}" value="${state.moveItemData.quantity}" oninput="state.moveItemData.quantity = this.value" class="w-full input-bg rounded px-3 py-2"> </div> <div class="space-y-2 mb-6"> ${state.characters.filter(c => c.id !== state.selectedCharacterId).map(character => `<button onclick="handleMoveItem(${character.id})" class="btn w-full text-left p-3 border-color rounded hover-bg text-lg"> ${character.name} </button>`).join('')} </div> <div class="flex justify-end"> <button onclick="state.showMoveModal = false; state.moveItemData = {item: null, quantity: 1}; render();" class="btn px-4 py-2 ${state.theme === 'dark' ? 'bg-stone-700 hover:bg-stone-600' : 'bg-gray-200 hover:bg-gray-300 text-gray-800'} rounded text-base">キャンセル</button> </div> </div> </div>`; }
@@ -335,14 +251,8 @@
             return modalHTML;
         }
 
-        // === アプリケーションの初期化処理 (パーティリスト取得機能を追加) ===
-        function fetchPartyList() {
-            database.ref('party_meta').once('value', snapshot => {
-                const data = snapshot.val() || {};
-                state.partyList = Object.keys(data).map(key => ({ id: key, meta: data[key] }));
-                render();
-            });
-        }
+        // === アプリケーションの初期化処理 (変更なし) ===
+        function fetchPartyList() { database.ref('party_meta').on('value', snapshot => { const data = snapshot.val() || {}; state.partyList = Object.keys(data).map(key => ({ id: key, meta: data[key] })); render(); }); }
         function initializeApp() {
             const savedTheme = localStorage.getItem('arianrod-theme') || 'dark';
             state.theme = savedTheme;
